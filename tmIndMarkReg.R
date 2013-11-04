@@ -8,17 +8,19 @@ library(topicmodels)
 library(lda)
 library(RWeka)
 
-#home <- "/home/kingfish"
-home <- "/home/hinckley"
-#homePath = paste(home, "/greenspanC", sep="")
+home <- "/home/kingfish"
+#home <- "/home/hinckley"
+homePath = paste(home, "/greenspanC", sep="")
 
-homePath = paste(home, "/eccles2", sep="")
+#homePath = paste(home, "/eccles2", sep="")
 setwd(paste(homePath, sep=""))
 text <- system.file("texts", "txt", package="tm");
 corpus <- Corpus(DirSource())
 #corpus <- tm_map(corpus, function(x) iconv(enc2utf8(x), sub = "byte"))
 print("removing stopwords")
-corpus <- tm_map(corpus, removeWords, stopwords("english"))
+tail(corpus[[5]])
+corpus <- tm_map(corpus, removeWords, stopwords("SMART"))
+tail(corpus[[5]])
 print("removing punctuation")
 corpus <- tm_map(corpus, removePunctuation)
 print("removing numbers")
@@ -56,6 +58,8 @@ dtm$dimnames
 
 library(stringr)
 
+
+# script to obtain more prompting terms for MOVEE
 i = 0L
 ngramLength <- length(dtm$dimnames[[2]])
 for (i in 1:ngramLength) { 
@@ -77,34 +81,20 @@ for (i in 1:ngramLength) {
 # conundrum shortcircuit bottleneck slack subportfolio underwrit markmarket reacceler rosenberg 
 #boom 
 
-
-
-#dtm <- DocumentTermMatrix(corpus, control = list(ngrams, minWordLength = 4, weighting = weightTf))
-
-
-#dtm <- DocumentTermMatrix(corpus, control = list(weighting = weightTf))
-
-
-#dtm$dimnames
-#print("removing sparsely attested terms")
-#dtm <- DocumentTermMatrix(corpus, control = list(weighting = weightTf))
-#dtm <- removeSparseTerms(dtm, .95)
-#dtm <- removeSparseTerms(dtm, .97)
-#print("completing stems")
-#rownames(dtm) = stemCompletion(rownames(dtm), corpus_orig)
-
+#create topic model using VEM, Gibbs sampling, fixed VEM
 print("setting topic # or K, and seed of random gen")
 K <- 10
-SEED <- 168
+SEED <- 167
 print("LDA ifying the DTM")
 
 print("performing VEM, Gibbs, VEM_fixed on DTM")
+#This part can take a while, depending on how many documents you have
 greenspan_TM <-
-  list(VEM = LDA(dtm, k = K, control = list(seed = SEED)),  
+  list(VEM = LDA(dtm, k = K, control = list(seed = SEED)), #note that DTM is required to be weighted with weightTf, term frequency  
        Gibbs = LDA(dtm, k = K,
                    control = list(seed = SEED)),
        VEM_fixed = LDA(dtm, k = K,
-                       control = list(estimate.alpha = TRUE, seed = SEED))) #,
+                       control = list(estimate.alpha = TRUE, seed = SEED))) 
 #print("performing Gibbs sampling")
 #greenspan_TM <-      
 #  list(Gibbs = LDA(dtm, k = K,
@@ -119,42 +109,28 @@ greenspan_TM$Gibbs
 print("topics for corpus")
 Topic <- topics(greenspan_TM[["Gibbs"]], 1)
 print("terms for corpus")
-Terms <- terms(greenspan_TM[["Gibbs"]], 10)
+Terms <- terms(greenspan_TM[["Gibbs"]], 20) #I sometimes do 10, depending on size of corpus
+                                            
 
 #lda <- LDA(dtm, control = list(alpha = 0.1), K)
+Terms[,1] #view terms to see how "clean" the topics are, adjust K, seed, and other params as needed to obtain a clean topic set
 Terms[,2]
-gammaDF <- as.data.frame(greenspan_TM$Gibbs@gamma)
+Terms
+gammaDF <- as.data.frame(greenspan_TM$Gibbs@gamma) #key step for gathering topic proportions!
 
 #######################
-
 #set topic names from common terms
 
 
-###########################
-# get time series data from DJIA
 
-library(zoo)
-library(sqldf)
-djia_ts <- read.csv("/home/kingfish/DJIA.csv", sep = ",", header=TRUE, stringsAsFactor=FALSE)
-# http://research.stlouisfed.org/fred2/series/DJIA/downloaddata
-# weekly, ending Friday
-# 1987-01-01 to 2006-12-31
-#text, comma separated
-x <- djia_ts[2][1]
-dt <- djia_ts[1][,1]
-ts <- zoo(x, dt)
-ts
-plot.ts(ts)
-
-############################
 
 
 
 #########################
-# build time series for each topic in topic model from Greenspan corpus
+# build time series for each topic in topic model from Greenspan corpus and write to CSV
 
 gts_home_path <- "/home/kingfish/gts/"
-ets_home_path <- "/home/kingfish/ets/"
+#ets_home_path <- "/home/kingfish/ets/"
 setwd(ets_home_path)
 
 doc_num <- 0L
@@ -192,6 +168,10 @@ for (topic in 1:K) {
   } 
   write.csv(topicMatrix$topicName, file = filename)
 }
+
+###########################
+# same step as above, but lazily and hastily created for another corpus
+
 
 ets_home_path <- "/home/kingfish/ets/"
 setwd(ets_home_path)
@@ -242,6 +222,11 @@ corpus[[2]]
 
 library(zoo)
 library(sqldf)
+
+
+#################
+# Read topic proportion time series from CSVs and plot as time series
+#################
 
 topic1_ets <- read.csv("/home/kingfish/ets/war_econom_nation_income.csv", sep = ",", header=FALSE, stringsAsFactor=FALSE)
 # http://research.stlouisfed.org/fred2/series/DJIA/downloaddata
@@ -400,6 +385,7 @@ dt11 <- topic11_ts[1][,1]
 ts11 <- zoo(x11, dt11)
 ts11
 plot.ts(ts11)
+plot(ts11)
 
 
 topic12_ts <- read.csv("/home/kingfish/gts/topic_12_rate_internal.csv", sep = ",", header=FALSE, stringsAsFactor=FALSE)
@@ -412,8 +398,10 @@ dt12 <- topic12_ts[1][,1]
 ts12 <- zoo(x12, dt12)
 ts12
 plot.ts(ts12)
-
-
+plot(ts12)
+##################3
+#
+# turn DJIA into a time series and plot
 
 djia_ts <- read.csv("/home/kingfish/DJIA.csv", sep = ",", header=FALSE, stringsAsFactor=FALSE)
 # http://research.stlouisfed.org/fred2/series/DJIA/downloaddata
@@ -438,32 +426,11 @@ ccf(topic9_ts, topic1_ts)
 
 diff(ts1, ts2)
 
-dtm$dimnames[[2]]
-
-#corpus <- tm_map(corpus, stemCompletion, dictionary=corpus_orig)
-wordMatrix = as.data.frame( t(as.matrix(  dtm )) ) 
-#findAssocs(dtm, "risk", .4)
-wordMatrix
-
-tdm2 <- TermDocumentMatrix(corpus, control=list(weighting=weightTfIdf))
-tdm2 <- removeSparseTerms(tdm2, .9)
-
-adjMatrixFromTdm <- as.matrix(tdm2) %*% t(as.matrix(tdm2))
-a <- adjMatrixFromTdm
-a
-
-
-adjMatJSON <- toJSON( as.data.frame.model.matrix(a))
-######
-
-library(popgraph)
-
-JSONadjMat.json <- to_json(as.population_graph(as.matrix(a)))
-write.table(JSONadjMat.json, file="/home/hinckley/adjMatJSON.json")
-
 library(stringr)
 
-
+###############
+# IGNORE THIS
+###############
 i = 0L
 ngramLength <- length(dtm$dimnames[[2]])
 for (i in 1:ngramLength) { 
@@ -492,22 +459,40 @@ library(xts)
 
 
 #emptyTS <- xts(0[seq(1:6642)],seq(from=as.Date('1987-09-09'), to=as.Date('2005-11-14'), by=1))
+
+
+##########################
+##########################
+# padding a time series (one way to do it)
+###########################
+###########################
+
+
+##########################
+##########################
+## data.table and sqldf goodness
+##########################
+##########################
+library(xts)
 emptyTS <- xts(,seq(from=as.Date('1987-09-09'), to=as.Date('2005-11-14'), by=1))
 
 summary(emptyTS)
 emptyTS
 
-tbill_ts <- read.csv("/var/www/GreenspanData/ten_year_t_bill_data_raw.csv", sep = ",", header=FALSE, stringsAsFactor=FALSE)
 
+tbill_ts <- read.csv("/var/www/GreenspanData/ten_year_t_bill_data_raw.csv", sep = ",", header=FALSE, stringsAsFactor=FALSE)
+tbill_ts$V1
 tbill_x <- tbill_ts[2][1]
 tbill_x
-tbill_dt <- as.Date(tbill_ts[1][,1], format= "YYYY-MM-DD")
-
+tbill_dt <- tbill_ts$V1 #as.Date(tbill_ts[1][,1], format= "YYYY-MM-DD")
+tbill_dt <- as.Date(tbill_ts$V1, format = "YYYY-MM-DD")
+    #### problem converting from character to date  ######PROBLEM_PROBLEM_PROBLEM
 tbill_dt
 class(tbill_dt)
 tbill_zoo <- zoo(tbill_x, tbill_dt)
 plot(tbill_zoo)
 tbill_zoo
+#####         na.locf(merge ...) is very handing for padding time zeries
 tbill_newt <-  na.locf(merge(tbill_zoo, emptyTS, all=TRUE))
 tbill_newt
 plot(tbill_newt)
@@ -518,12 +503,17 @@ plot(tbill_zoo)
 summary(tbill_zoo)
 
 length(tbill_zoo)
+
+
 djia_ts <- read.csv("/home/hinckley/DJIA-percent-change-avg-Friday.csv", sep = ",", header=TRUE, stringsAsFactor=FALSE)
 
+
+#### MAJOR improvement with this version of --------use header=FALSE!!!
 topic_12 <- read.csv("/home/kingfish/gts/topic_12_rate_internal.csv", header=FALSE)
 tx = topic_12[2][1]
 tdt = as.Date(topic_12[1][,1])
 t12ts <- zoo(tx, tdt)
+plot.ts(t12ts)
 plot(t12ts)
 summary(t12ts)
 
@@ -532,75 +522,113 @@ summary(t12ts)
 library(sqldf)
 library(data.table)
 t_twelve <- dput(t12ts)
-t12 <- as.data.table(t12ts)
-t12 <- as.data.table(cbind(tx, tdt))
-tbill 
+#t12 <- as.data.table(t12ts)
+t12 <- as.data.table(cbind(tx, tdt)) 
 t12
 tbill_data <- as.data.table(cbind(tbill_x, tbill_dt))
-sqldf("
-      SELECT * 
-      FROM t12 as t12, tbill_data as b, t12 as t12_plus1
-      ")
+tbill_data
+
+# do not run this - this is a cartesian join - it will hang your machine
+#sqldf("
+#      SELECT * 
+#      FROM t12 as t12, tbill_data as b, t12 as t12_plus1
+#      ")
+
+#print the current and the day before the next Fed statement
 sqldf("SELECT t12_1.tdt, t12_2.tdt-1 
       FROM t12 as t12_1, 
       t12 as t12_2 
       WHERE t12_2.tdt > t12_1.tdt 
       AND t12_2.tdt = (SELECT MIN(t12_3.tdt) AS tdt 
-      FROM t12 as t12_3 
-      WHERE t12_3.tdt > t12_1.tdt)")
+                         FROM t12 as t12_3 
+                        WHERE t12_3.tdt > t12_1.tdt)")
 
+#how many days between Fed statements, max? 
 sqldf("SELECT MAX(t12_2.tdt-1 - t12_1.tdt)
-      FROM t12 as t12_1, 
-      t12 as t12_2 
+         FROM t12 as t12_1, 
+              t12 as t12_2 
+        WHERE t12_2.tdt > t12_1.tdt 
+          AND t12_2.tdt = (SELECT MIN(t12_3.tdt) AS tdt 
+                             FROM t12 as t12_3 
+                            WHERE t12_3.tdt > t12_1.tdt)")
+#107 for Greenspan, given robustness of scraper for Greenspan corpus
+
+#how many days min? 
+sqldf("SELECT MIN(t12_2.tdt-1 - t12_1.tdt)
+         FROM t12 as t12_1, 
+              t12 as t12_2 
+        WHERE t12_2.tdt > t12_1.tdt 
+          AND t12_2.tdt = (SELECT MIN(t12_3.tdt) AS tdt 
+                             FROM t12 as t12_3 
+                            WHERE t12_3.tdt > t12_1.tdt)")
+
+#0 ------> could be a problem
+
+#how many days avg? 
+sqldf("SELECT AVG(t12_2.tdt-1 - t12_1.tdt)
+         FROM t12 as t12_1, 
+              t12 as t12_2 
       WHERE t12_2.tdt > t12_1.tdt 
       AND t12_2.tdt = (SELECT MIN(t12_3.tdt) AS tdt 
       FROM t12 as t12_3 
       WHERE t12_3.tdt > t12_1.tdt)")
 
-sqldf("SELECT MAX(t12_2.tdt-1 - t12_1.tdt)
-      FROM t12 as t12_1, 
-      t12 as t12_2 
-      WHERE t12_2.tdt > t12_1.tdt 
-      AND t12_2.tdt = (SELECT MIN(t12_3.tdt) AS tdt 
-      FROM t12 as t12_3 
-      WHERE t12_3.tdt > t12_1.tdt)")
-
-tbill_rolling_avg <- sqldf("SELECT DATE(t12_1.tdt) AS dt, AVG(tb.V2) AS rolling_avg
-                           FROM t12 as t12_1, 
-                           t12 as t12_2,
-                           tbill_data as tb
-                           WHERE t12_2.tdt > t12_1.tdt 
-                           AND tb.tbill_dt BETWEEN t12_1.tdt AND t12_2.tdt-1
-                           AND t12_2.tdt = (SELECT MIN(t12_3.tdt) AS tdt 
-                           FROM t12 as t12_3 
-                           WHERE t12_3.tdt > t12_1.tdt)
-                           GROUP BY t12_1.tdt")
-
-tbill_rolling_avg_dates <- as.data.table(cbind(roll_avg <- tbill_rolling_avg$rolling_avg, dt <- tbill_rolling_avg$dt))
+# ~13.4 avg
 
 
-sqldf("SELECT tb.v2 AS dt
-      FROM tbill_rolling_avg_dates as tb")
 
-new_tbill <- sqldf("SELECT tb.v1 AS rolling_avg, t12.tdt
+#get a table consisting of a date and a rolling average from t_bill data
+tbill_rolling_avg <- sqldf("SELECT DATE(t12_1.tdt) AS dt, 
+                                   AVG(tb.V2) AS rolling_avg
+                              FROM t12 as t12_1, 
+                                   t12 as t12_2,
+                                   tbill_data as tb
+                             WHERE t12_2.tdt > t12_1.tdt 
+                               AND tb.tbill_dt BETWEEN t12_1.tdt  AND t12_2.tdt-1
+                               AND t12_2.tdt = (SELECT MIN(t12_3.tdt) AS tdt 
+                                                  FROM t12 as t12_3 
+                                                 WHERE t12_3.tdt > t12_1.tdt)
+                             GROUP BY t12_1.tdt")
+
+tbill_rolling_avg
+
+#clumsy, embarassing attempt to deal with R syntax
+#R assigns names V1, V2, investigate
+tbill_rolling_avg_dates <- as.data.table(cbind(tbill_rolling_avg$rolling_avg, tbill_rolling_avg$dt))
+
+tbill_rolling_avg_dates
+
+head(sqldf("SELECT *
+      FROM tbill_rolling_avg_dates as tb"))
+# make sure that dates are the same, same #
+new_tbill <- sqldf("SELECT tb.V1 AS rolling_avg, t12.tdt
                    FROM tbill_rolling_avg_dates as tb,
-                   t12
-                   WHERE tb.v2 = t12.tdt
+                         t12
+                   WHERE tb.V2 = t12.tdt
                    ")
+
+
 
 new_t12 <- sqldf("SELECT t12.tdt, t12.V2
                  FROM tbill_rolling_avg_dates as tb,
-                 t12
+                      t12
                  WHERE tb.v2 = t12.tdt
                  ")
 
-model <- lm(coredata(new_t12$V2) ~ coredata(new_tbill$rolling_avg))))
-fitted(model)
-plot(fitted(model))
-#etc.
+# now plot!
+model1 <- lm(coredata(new_t12$V2) ~ coredata(new_tbill$rolling_avg))
+plot(fitted(model1))
+model2 <- lm(coredata(new_tbill$rolling_avg) ~ coredata(new_t12$V2))
 
-plot(fitted(lm(coredata(new_t12$V2) ~ coredata(new_tbill$rolling_avg))))
-summary(lm(coredata(new_tbill$rolling_avg) ~ coredata(new_t12$V2)))
+library(car)
+#bring in other topics, other macroeconomic indicators, etc. at this point
+#make code elegant
+
+dwtest(model1)
+dwtest(model2)
+
+
+
 plot(lm(diff(coredata(new_t12$V2)) ~ diff(coredata(new_tbill$rolling_avg))))
 
 cor.test(coredata(new_t12$V2), coredata(new_tbill$rolling_avg), method="spearman")
@@ -624,7 +652,9 @@ length(t12ts_new)
 coredata(tbill_ts)
 coredata(t12ts_new)
 
-lm(coredata(diff(tbill_ts)) ~ coredata(t12ts_new))
+model <- lm(coredata(diff(tbill_ts)) ~ coredata(t12ts_new))
+dwtest(model)
+
 sqldf("SELECT * FROM tbill_data")
 
 
@@ -687,6 +717,7 @@ newts
 length(newt12) #6572 --- 05-11-14
 length(tbill_newt)
 
+
 # ------------> sqldf
 
 library(xts)
@@ -739,10 +770,3 @@ as.zoo(ts)
 #plot DJIA and perform padding as needed
 
 
-
-
-lm(coredata(t12ts_newt) ~ coredata(tbill_newt))
-q = c(63,4,32,3,4,3,3,4,3
-)
-%IN% 
-  
