@@ -1,6 +1,9 @@
 #python nltk integration --- using Marti Hearst's textiling algorithm
 # textiling uses a roving text window to  identify breaks in the topical structure within a text
 
+# http://clover.slavic.pitt.edu/sam/propp/praxis/results.html#final
+
+# http://www.lrec-conf.org/proceedings/lrec2012/pdf/876_Paper.pdf
 
 
 library(rPython)
