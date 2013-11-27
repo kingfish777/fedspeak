@@ -19,24 +19,28 @@ python.exec("corpus_root = '/home/hinckley/Public/corpora/transcripts/1936'")
 python.exec("corpus = PlaintextCorpusReader(corpus_root, '.*')")
 python.get("corpus.fileids()")
 python.get("corpus.open('fomcropa19361120.txt')")
-python.exec("url = \"/home/hinckley/Public/corpora/transcripts/1936/fomcropa19361120.txt\"")
+#python.exec("url = \"/home/hinckley/Public/corpora/transcripts/1936/fomcropa19361120.txt\"")
+python.exec("url = \"/home/hinckley/Public/corpora/afan/ArmlessMaiden.txt\"")
+python.exec("url = \"/home/hinckley/Public/corpora/afan/BaldakBorisevich.txt\"")
+#python.exec("url = \"/home/hinckley/Public/corpora/afan/JackFrost.txt\"")
+python.exec("url = \"/home/hinckley/Public/corpora/afan/DaughterStepdaughter.txt\"")
+python.exec("url = \"/home/hinckley/Public/corpora/afan/Berenushka.txt\"")
+
+
 python.exec("raw = urlopen(url).read()")
 #python.exec("alice = nltk.corpus.gutenberg.raw('carroll-alice.txt')")
 #python.get("alice")
-python.exec("ttt = nltk.tokenize.TextTilingTokenizer()")
-#c <- unlist(sapply(corpus[[1]], paste))
-python.exec("corpus")
-#python.assign("corpus", c)
-python.get("corpus")
-#python.exec(c("text = """"", c, """"))
+#python.exec("ttt = nltk.tokenize.TextTilingTokenizer(w=7, k=4, similarity_method=0, stopwords=None, smoothing_method=[0], smoothing_width=2, smoothing_rounds=50, cutoff_policy=10, demo_mode=False)")
+python.exec("ttt = nltk.tokenize.TextTilingTokenizer(w=7, k=3, smoothing_width = 6, smoothing_rounds = 10)")
+#similarity_method, 0, BLOCK_COMPARISON,
 python.get("raw")
 python.exec(paste("tiles = ttt.tokenize(raw)"))
-zip <- python.get("tiles[2]")
-python.get("tiles[4]")
+zip <- python.get("tiles[-1]")
+zip
+python.get("tiles")
 text <- paste("espeak -p 99 \"", zip, "\"", sep="")
 text
 system(text)
 
-python.exec("nltk.tokenize.texttiling.demo(text=None)")
-
+#python.exec("nltk.tokenize.texttiling.demo(text=None)")
 
