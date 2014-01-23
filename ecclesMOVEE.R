@@ -10,7 +10,7 @@
 # Email: scott [dot] malec [at] gmail [dot] com
 # Date: 1/23/2014
 #
-# TITLE: THE R TEXT CLASSIFIER - Brand Management, Plagiarism Detection
+# TITLE: ecclesMOVEE.R
 #
 # Purpose: R tools to animate GraphViz of connection between popular n-grams
 #          across time for a colleciton of texts 
