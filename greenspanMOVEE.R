@@ -1,4 +1,21 @@
-
+#########################################################################
+# Copyright (c) 2014 All Rights Reserved, Scott Alexander Malec
+#
+# This source is free to use and distribute so long as credit is provided.
+# This code is provided "AS IS" without warranty of any kind, either
+# expressed or implied, including but not limited to the implied
+# warranties of merchantability and/or fitness for a particular purpose.
+#
+# Author: Scott Alexander Malec
+# Email: scott [dot] malec [at] gmail [dot] com
+# Date: 1/23/2014
+#
+# TITLE: greenspanMOVEE.R
+#
+# Purpose: R tools to animate GraphViz of connection between popular n-grams
+# across time for a colleciton of texts
+#
+#########################################################################
 
 library("calibrate")
 library("tm")
