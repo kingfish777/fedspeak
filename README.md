@@ -1,7 +1,7 @@
 fedspeak
 ========
 
-pittsburgh_r_useR_group_Nov_4_2013
+pittsburgh_r_useR_group_Nov_4_2013 (http://www.meetup.com/Pittsburgh-useR-Group/)
 
 Purpose: analysize Fedspeak
 
@@ -21,4 +21,4 @@ Goods:
 TO DO: 
 
  * clean up process of creating time series from topic model proportions (*apply-family of f(x))
- * created annotated d3.js (http://d3js.org/) /rickshaw.js (http://code.shutterstock.com/rickshaw/) application
+ * create annotated d3.js (http://d3js.org/) /rickshaw.js (http://code.shutterstock.com/rickshaw/) application
