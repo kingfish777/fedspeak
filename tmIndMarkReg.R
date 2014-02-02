@@ -1,4 +1,3 @@
-
 #########################################################################
 # Copyright (c) 2014 All Rights Reserved, Scott Alexander Malec
 #
@@ -14,6 +13,9 @@
 # TITLE: tmIndMarkReg.R
 #
 # Purpose: convert collection of texts, coded for date of publication, into time zeries object
+#
+#
+# http://exiledonline.com/recovered-economic-history-everyone-but-an-idiot-knows-that-the-lower-classes-must-be-kept-poor-or-they-will-never-be-industrious/
 #
 #########################################################################
 
