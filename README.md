@@ -21,4 +21,4 @@ Goods:
 TO DO: 
 
  * clean up process of creating time series from topic model proportions (*apply-family of f(x))
- * created annotated d3.js/rickshaw application
+ * created annotated d3.js (http://d3js.org/) /rickshaw.js (http://code.shutterstock.com/rickshaw/) application
