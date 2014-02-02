@@ -14,6 +14,7 @@ Fedspeak/Greenspeak Definition:
 Goods: 
 
  * created time series from topic model proportions using R and imported these results into d3.js
+ * R to Python interface to access implementation of Marti Hearst's Textiling algorithm, auto-segmentation of texts using roving windows and cosine similarity metrics: http://people.ischool.berkeley.edu/~hearst/research/tiling.html
  
 
 TO DO: 
