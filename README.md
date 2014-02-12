@@ -3,7 +3,7 @@ fedspeak
 
 pittsburgh_r_useR_group_Nov_4_2013 (http://www.meetup.com/Pittsburgh-useR-Group/)
 
-Purpose: analysize Fedspeak
+Purpose: to analysize fedspeak
 
 Fedspeak/Greenspeak Definition: 
 	“Language of purposeful obfuscation to avoid certain questions coming up where saying 'no comment' is in 
@@ -22,3 +22,4 @@ TO DO:
 
  * clean up process of generating time series from topic model proportions (*apply-family of f(x))
  * create annotated d3.js (http://d3js.org/) /rickshaw.js (http://code.shutterstock.com/rickshaw/) application
+ * create project bibliography
