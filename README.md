@@ -24,4 +24,5 @@ TO DO:
  * create annotated d3.js (http://d3js.org/) /rickshaw.js (http://code.shutterstock.com/rickshaw/) application
  * create project bibliography
  * implement n-gram tokenization using RTextTools instead of tm, as it doesn't require RWeka's rJava dependency with its memory limits
+ * also use unique function in RTextTools package to obtain k for topic model #: http://www.rtexttools.com/1/post/2011/08/getting-started-with-latent-dirichlet-allocation-using-rtexttools-topicmodels.html
 
