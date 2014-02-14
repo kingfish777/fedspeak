@@ -23,3 +23,5 @@ TO DO:
  * clean up process of generating time series from topic model proportions (*apply-family of f(x))
  * create annotated d3.js (http://d3js.org/) /rickshaw.js (http://code.shutterstock.com/rickshaw/) application
  * create project bibliography
+ * implement n-gram tokenization using RTextTools instead of tm, as it doesn't require RWeka's rJava dependency with its memory limits
+
