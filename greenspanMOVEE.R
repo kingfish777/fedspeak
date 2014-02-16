@@ -33,6 +33,7 @@ library("RWekajars")
 library("Rgraphviz")
 library("MASS")
 library("slam")
+library(RTextTools)
 #library("igraph")
 
 years = list(40)
@@ -144,7 +145,14 @@ plotDefaultYearByYear <- function(years)
   yourTokenizer <- function(x) RWeka::NGramTokenizer(x, Weka_control(min=1, max=3))
   tdm <- TermDocumentMatrix(corpus, control = list(weighting = function(x) weightTfIdf(x, normalize = FALSE), tokenize=yourTokenizer, stopwords = TRUE))
   tdm <- removeSparseTerms(tdm, .98)
-  dtm <- DocumentTermMatrix(corpus, control = list(weighting = function(x) weightTfIdf(x, normalize = FALSE), tokenize=yourTokenizer, stopwords = TRUE))
+  #dtm <- DocumentTermMatrix(corpus, control = list(weighting = function(x) weightTfIdf(x, normalize = FALSE), tokenize=yourTokenizer, stopwords = TRUE))
+  dtm <- create_matrix(cbind(as.vector(corpus)), language="english", minDocFreq=1, maxDocFreq=Inf, 
+              minWordLength=3, maxWordLength=Inf, ngramLength=3, originalMatrix=NULL, 
+              removeNumbers=FALSE, removePunctuation=TRUE, removeSparseTerms=0, 
+              removeStopwords=TRUE,  stemWords=FALSE, stripWhitespace=TRUE, toLower=TRUE, 
+              weighting=weightTf)
+  rowTotals <- apply(dtm , 1, sum) #Find the sum of words in each Document
+  dtm   <- dtm[rowTotals> 0]           #remove all docs without words
   dtm <- removeSparseTerms(dtm, .98)
   print("##### we now have a tdm")
   interesting_word_list_size <- length(unlist(interestingList))
