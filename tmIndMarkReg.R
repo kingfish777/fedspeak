@@ -27,6 +27,7 @@ library(lsa)
 library(topicmodels)
 library(lda)
 library(RWeka)
+library(RTextTools)
 
 home <- "/home/kingfish"
 #home <- "/home/hinckley"
@@ -71,7 +72,15 @@ ngrams
 
 #dtm <- DocumentTermMatrix(corpus)
 #BiGramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 2, max = 2))
-dtm <- DocumentTermMatrix(corpus, control = list( ngrams, weighting = weightTf))
+#dtm <- DocumentTermMatrix(corpus, control = list( ngrams, weighting = weightTf))
+dtm <- create_matrix(cbind(as.vector(corpus)), language="english", minDocFreq=1, maxDocFreq=Inf, 
+              minWordLength=3, maxWordLength=Inf, ngramLength=3, originalMatrix=NULL, 
+              removeNumbers=TRUE, removePunctuation=TRUE, removeSparseTerms=0, 
+              removeStopwords=TRUE,  stemWords=FALSE, stripWhitespace=TRUE, toLower=TRUE, 
+              weighting=weightTf)
+rowTotals <- apply(dtm , 1, sum) #Find the sum of words in each Document
+dtm   <- dtm[rowTotals> 0]           #remove all docs without words
+dtm <- removeSparseTerms(dtm, .95)
 dtm$dimnames
 dtm <- removeSparseTerms(dtm, .99)
 dtm$dimnames
