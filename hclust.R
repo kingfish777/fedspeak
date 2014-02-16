@@ -1,6 +1,7 @@
 library(tm)
 library(RWeka)
 library(ape)
+library(RTextTools)
 home <- "/home/hinckley"
 homePath = paste(home, "/Public/corpora/FEDSpeak2", sep="")
 setwd(paste(homePath, sep=""))
@@ -13,8 +14,16 @@ corpus <- tm_map(corpus, removeNumbers)
 corpus <- tm_map(corpus, tolower)
 corpus <- tm_map(corpus, stripWhitespace)
 corpus <- tm_map(corpus, stemDocument, language = "english")
-ngrams <- RWeka::NGramTokenizer(corpus, Weka_control(min=1, max=4))
-dtm <- DocumentTermMatrix(corpus, control = list(ngrams, wordLengths=c(3, 25), weighting = weightTfIdf, stopwords=TRUE))
+#ngrams <- RWeka::NGramTokenizer(corpus, Weka_control(min=1, max=4))
+#dtm <- DocumentTermMatrix(corpus, control = list(ngrams, wordLengths=c(3, 25), weighting = weightTfIdf, stopwords=TRUE))
+dtm <- create_matrix(cbind(as.vector(corpus)), language="english", minDocFreq=1, maxDocFreq=Inf, 
+              minWordLength=3, maxWordLength=Inf, ngramLength=3, originalMatrix=NULL, 
+              removeNumbers=FALSE, removePunctuation=TRUE, removeSparseTerms=0, 
+              removeStopwords=TRUE,  stemWords=FALSE, stripWhitespace=TRUE, toLower=TRUE, 
+              weighting=weightTf)
+rowTotals <- apply(dtm , 1, sum) #Find the sum of words in each Document
+dtm   <- dtm[rowTotals> 0]           #remove all docs without words
+
 dtm <- removeSparseTerms(dtm, .95)
 plot(hclust(dist(dtm), method="complete"), xlab="text from corpus", "ylab"="distance", main="Cluster Dendrogram of Various Texts")
 
