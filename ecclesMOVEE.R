@@ -16,9 +16,6 @@
 #          across time for a colleciton of texts 
 #
 #########################################################################
-
-
-
 #library("calibrate")
 library("tm")
 library("lsa")
@@ -36,9 +33,6 @@ library("Rgraphviz")
 library("MASS")
 library("slam")
 #library("igraph")
-
-
-
 years = list(17)
 years = sequence(20)+1934
 #year = 1985
@@ -72,7 +66,6 @@ interestingList = list("money", "capital", "oil", "violence", "imperi", "ameri",
 #interestingList = list("congress", "military", "cia")
 #interestingList = list("efficient market")
 #interestingList = list("bail")
-
 interestingList = list("stock", "investment", "money", "elite", "economy", "war", "boston", "chicago", "conservative", "scoundrel", "morality", "greed",
                        "corporations", "deflation", 
                        "fourtyhour", "current income", "corporation",
@@ -93,27 +86,18 @@ interestingList = list("stock", "investment", "money", "elite", "economy", "war"
                        "distribut incom", "gold", "silver", "coin", "destruct", "destruct", "enterpris", "flow", "bank act",
                        "use power", "wall street", "new york", "p morgan", "recoveri", "investor", "doubt", "nation debt",
                        "danger", "abandon prudenc", "board power", "bad set", "bank must")
-
 #interestingList = list( "financ")
-
 length(unlist(interestingList))
-
-
 #unlist(interestingList)[3]
 aggregateResults = list(1000)
-
-
 aggregateResults = list(10000)
 assocResults = list(10000)
 #DTM_agg = list(100)
-
 home = "/home/hinckley"
 homePath = paste(home, "/Public/corpora/eccles/", sep="")
 homePath = "/home/hinckley/Public/corpora/eccles/"
 i = 1
-
 image_index = 1
-
 zero_pad_index <- function(image_Index) {
  if (image_Index >= 100 && image_Index < 1000)
    padded <- paste("0", as.character(image_Index), sep="")
@@ -123,8 +107,10 @@ zero_pad_index <- function(image_Index) {
    padded <- paste("000", as.character(image_Index), sep="")
  else as.character(image_Index)
 }
-
-
+############################
+###
+###
+############################
 plotDefaultYearByYear <- function(years)
 {
   home = "/home/hinckley"
@@ -231,5 +217,9 @@ plotDefaultYearByYear <- function(years)
     }
   }
 }
-
+#########################
 lapply(years, plotDefaultYearByYear)
+########
+#
+#
+########
