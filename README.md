@@ -26,3 +26,4 @@ TO DO:
  * implement n-gram tokenization using RTextTools instead of tm, as it doesn't require RWeka's rJava dependency with its memory limits
  * also use unique function in RTextTools package to obtain k for topic model #: http://www.rtexttools.com/1/post/2011/08/getting-started-with-latent-dirichlet-allocation-using-rtexttools-topicmodels.html
 
+http://www.newyorker.com/online/blogs/johncassidy/2014/04/what-janet-yellen-didnt-say-the-b-word.html
