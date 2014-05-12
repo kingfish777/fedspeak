@@ -27,3 +27,6 @@ TO DO:
  * also use unique function in RTextTools package to obtain k for topic model #: http://www.rtexttools.com/1/post/2011/08/getting-started-with-latent-dirichlet-allocation-using-rtexttools-topicmodels.html
 
 http://www.newyorker.com/online/blogs/johncassidy/2014/04/what-janet-yellen-didnt-say-the-b-word.html
+
+interest rates and unemployment:
+http://www.counterpunch.org/2014/05/12/the-fed-and-manufactured-crises/
