@@ -30,3 +30,6 @@ http://www.newyorker.com/online/blogs/johncassidy/2014/04/what-janet-yellen-didn
 
 interest rates and unemployment:
 http://www.counterpunch.org/2014/05/12/the-fed-and-manufactured-crises/
+
+http://www.counterpunch.org/2014/05/23/monetary-policy-as-class-warfare-revisited/
+
