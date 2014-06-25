@@ -33,3 +33,5 @@ http://www.counterpunch.org/2014/05/12/the-fed-and-manufactured-crises/
 
 http://www.counterpunch.org/2014/05/23/monetary-policy-as-class-warfare-revisited/
 
+<script data-gittip-username="kingfish777"
+        src="//gttp.co/v1.js"></script>
