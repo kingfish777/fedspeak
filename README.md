@@ -33,5 +33,7 @@ http://www.counterpunch.org/2014/05/12/the-fed-and-manufactured-crises/
 
 http://www.counterpunch.org/2014/05/23/monetary-policy-as-class-warfare-revisited/
 
+a bit on fedspeak: http://www.nytimes.com/2014/07/18/business/the-feds-bully-pulpit-on-wall-street.html?_r=0
+
 <script data-gittip-username="kingfish777"
         src="//gttp.co/v1.js"></script>
