@@ -39,6 +39,9 @@ https://www.youtube.com/watch?v=0liegrixknA
 
 Julio Yglesias praises Abenomics: http://www.slate.com/articles/business/moneybox/2013/05/abenomics_is_working_shinzo_abe_s_policies_are_leading_the_way_to_recovery.html
 
+-------------------------------
+very promising: https://github.com/kingfish777/concept_drifts
+
 
 <script data-gittip-username="kingfish777"
         src="//gttp.co/v1.js"></script>
