@@ -37,11 +37,13 @@ a bit on fedspeak: http://www.nytimes.com/2014/07/18/business/the-feds-bully-pul
 
 https://www.youtube.com/watch?v=0liegrixknA
 
-Julio Yglesias praises Abenomics: http://www.slate.com/articles/business/moneybox/2013/05/abenomics_is_working_shinzo_abe_s_policies_are_leading_the_way_to_recovery.html
+Julio Yglesias (j/k) praises Abenomics: http://www.slate.com/articles/business/moneybox/2013/05/abenomics_is_working_shinzo_abe_s_policies_are_leading_the_way_to_recovery.html
 
 -------------------------------
 very promising: https://github.com/kingfish777/concept_drifts
 
+Yellen continues along in Burns/Volcker/Greenspan/Bernanke-an pattern:
+http://www.nakedcapitalism.com/2015/02/yellen-defies-congress-defends-greenspanian-general-counsel-scott-alvarez-elizabeth-warren-grilling.html
 
 <script data-gittip-username="kingfish777"
         src="//gttp.co/v1.js"></script>
